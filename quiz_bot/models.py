@@ -15,14 +15,14 @@ class BotUser(models.Model):
     def full_name(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
 
-    def has_no_first_name(self):
-        return True if self.first_name == '*' else False
+    def has_first_name(self):
+        return False if self.first_name == '*' else True
 
-    def has_no_last_name(self):
-        return True if self.last_name == '*' else False
+    def has_last_name(self):
+        return False if self.last_name == '*' else True
 
-    def has_no_username(self):
-        return True if self.username == '*' else False
+    def has_username(self):
+        return False if self.username == '*' else True
 
 
 class Subject(models.Model):
