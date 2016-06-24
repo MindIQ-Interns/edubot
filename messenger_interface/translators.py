@@ -36,3 +36,8 @@ def translate_for_quiz_bot(message):
 
     else:
         return None
+
+
+translate = {
+    'messenger': {'quiz_bot': translate_for_quiz_bot},
+}
