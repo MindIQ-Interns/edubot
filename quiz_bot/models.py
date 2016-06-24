@@ -7,7 +7,7 @@ class BotUser(models.Model):
     last_name = models.CharField(max_length=200, default='*')
     username = models.CharField(max_length=200, default='*')
     fb_id = models.CharField(max_length=200)
-    dob = models.DateField()
+    dob = models.DateField(null=True, blank=True, default=None)
     portal_counterpart = models.ForeignKey(PortalUser, null=True, blank=True, default=None)
 
     def __str__(self):
@@ -24,6 +24,9 @@ class BotUser(models.Model):
 
     def has_username(self):
         return False if self.username == '*' else True
+
+    def has_dob(self):
+        return False if self.dob is None else True
 
 
 class Subject(models.Model):
