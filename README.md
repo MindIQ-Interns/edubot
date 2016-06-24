@@ -15,7 +15,6 @@ NOTE: STILL IN DEVELOPMENT
 Format of JSON to be received by the Quiz Bot:
  {
     'sender_id': <sender_id>,
-    'type': <'raw'/'postback'/'data'>,
+    'type': <'raw'/'postback'>,
     'text': <text>,
-    'variable_tag': <'None' if 'type' is not 'data', else variable name>
  }
