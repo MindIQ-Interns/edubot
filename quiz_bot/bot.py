@@ -13,3 +13,4 @@ class QuizBot:
             self.mode = 'register'
 
     def register(self):
+        if self.client_data.has_no_first_name()
