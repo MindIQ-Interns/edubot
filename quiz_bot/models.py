@@ -7,6 +7,7 @@ class BotUser(models.Model):
     last_name = models.CharField(max_length=200, default='*')
     username = models.CharField(max_length=200, default='*')
     fb_id = models.CharField(max_length=200)
+    dob = models.DateField()
     portal_counterpart = models.ForeignKey(PortalUser, null=True, blank=True, default=None)
 
     def __str__(self):
