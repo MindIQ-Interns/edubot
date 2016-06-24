@@ -72,6 +72,7 @@ class Quiz(models.Model):
     topics = models.ManyToManyField(Topic)
     questions = models.ManyToManyField(Question)
     length = models.IntegerField()
+    image = models.ImageField(upload_to='quizzes', null=True, blank=True)
 
     def __str__(self):
         return self.name
