@@ -1,20 +1,20 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as PortalUser
 
 
-class UserExtensionManager(models.Manager):
-
-    def get_user(self, fb_id):
-        extension = self.get(fb_id=fb_id)
-        return extension.base
-
-
-# Django requires either extending the auth User like this, or substituting auth User with a custom User model. I chose to extend it. May have to substitute in future -NJ
-class UserExtension(models.Model):
+class BotUser(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    username = models.CharField(max_length=200)
     fb_id = models.CharField(max_length=200)
-    base = models.OneToOneField(User)
+    portal_counterpart = models.ForeignKey(PortalUser, null=True, blank=True, default=None)
 
-    objects = UserExtensionManager()
+    def __str__(self):
+        return self.full_name()
+
+    def full_name(self):
+        return '{0} {1}'.format(self.first_name, self.last_name)
+
 
 
 class Subject(models.Model):
@@ -56,7 +56,7 @@ class Question(models.Model):
 class Quiz(models.Model):
     name = models.CharField(max_length=200)
     is_compulsory = models.BooleanField(default=False)
-    author = models.ForeignKey(UserExtension)
+    author = models.ForeignKey(PortalUser)
     topics = models.ManyToManyField(Topic)
     questions = models.ManyToManyField(Question)
     length = models.IntegerField()
@@ -66,7 +66,7 @@ class Quiz(models.Model):
 
 
 class Answer(models.Model):
-    student = models.ForeignKey(UserExtension)
+    student = models.ForeignKey(BotUser)
     quiz = models.ForeignKey(Quiz)
     question = models.ForeignKey(Question)
     option = models.ForeignKey(Option)
@@ -77,7 +77,7 @@ class Answer(models.Model):
 
 # To VTA: Add comments on this too.
 class Review(models.Model):
-    student = models.ForeignKey(UserExtension)
+    student = models.ForeignKey(BotUser)
     quiz = models.ForeignKey(Quiz)
     score = models.IntegerField()
     text = models.TextField()
@@ -87,7 +87,7 @@ class Review(models.Model):
 
 
 class AttemptedData(models.Model):
-    student = models.ForeignKey(UserExtension)
+    student = models.ForeignKey(BotUser)
     quiz = models.ForeignKey(Quiz)
     number_attempted = models.IntegerField()
     is_complete = models.BooleanField(default=False)
