@@ -47,7 +47,7 @@ class Topic(models.Model):
 class Option(models.Model):
     text = models.TextField()
     is_correct = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='problems')
+    image = models.ImageField(upload_to='problems', null=True, blank=True)
 
     def __str__(self):
         return self.text
@@ -59,7 +59,7 @@ class Question(models.Model):
     details = models.TextField()
     review = models.TextField()
     options = models.ManyToManyField(Option)
-    image = models.ImageField(upload_to='problem')
+    image = models.ImageField(upload_to='problem', null=True, blank=True)
 
     def __str__(self):
         return self.text
