@@ -3,9 +3,9 @@ from django.contrib.auth.models import User as PortalUser
 
 
 class BotUser(models.Model):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    username = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200, default='*')
+    last_name = models.CharField(max_length=200, default='*')
+    username = models.CharField(max_length=200, default='*')
     fb_id = models.CharField(max_length=200)
     portal_counterpart = models.ForeignKey(PortalUser, null=True, blank=True, default=None)
 
@@ -15,6 +15,14 @@ class BotUser(models.Model):
     def full_name(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
 
+    def has_no_first_name(self):
+        return True if self.first_name == '*' else False
+
+    def has_no_last_name(self):
+        return True if self.last_name == '*' else False
+
+    def has_no_username(self):
+        return True if self.username == '*' else False
 
 
 class Subject(models.Model):
