@@ -2,10 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class UserExtensionManager(models.Manager):
+
+    def get_user(self, fb_id):
+        extension = self.get(fb_id=fb_id)
+        return extension.base
+
+
 # Django requires either extending the auth User like this, or substituting auth User with a custom User model. I chose to extend it. May have to substitute in future -NJ
 class UserExtension(models.Model):
     fb_id = models.CharField(max_length=200)
     base = models.OneToOneField(User)
+
+    objects = UserExtensionManager()
 
 
 class Subject(models.Model):
