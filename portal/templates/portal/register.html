@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registration</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href='{% static "portal/css/bootstrap.css" %}'>
+</head>
+<body>
+	<header>
+	<nav class="navbar navbar-inverse" style="background-color:white;">
+  		<div class="container-fluid">
+    	<div class="navbar-header">
+      	<a class="navbar-brand" href="/portal/" style="color:black;">QuizMasters</a>
+    	</div>
+    	<ul class="nav navbar-nav">
+      	<li><a href="/portal/" style="color:black;">Welcome!</a></li>
+      	<li><a href="/portal/" style="color:black;">Description</a></li>
+      	<li><a href="/portal/" style="color:black;">About Us</a></li>
+    	</ul>
+    		<ul class="nav navbar-nav navbar-right">
+      			<li class="active"><a href="#" style="color:white;">Sign Up</a></li>		
+    		</ul>
+    		<ul class="nav navbar-nav navbar-right">
+      			<li><a href="/portal/signin" style="color:black;">Sign In</a></li>		
+    		</ul>
+  		</div>
+	</nav>
+  	</header>
+  	<div class="container">
+	<div class="jumbotron">
+		<h1>Please fill in the details </h1>
+		<form action="/portal/register/" role="form" method="post"> {% csrf_token %}
+			{% for field in form1.visible_fields %}
+		<div class="form-group">
+			{{ field.errors }} 
+        	{{ field.label_tag }} {{ field }} <br> {{ field.help_text }}
+		</div>
+		<br>
+		{% endfor %}
+		{% for field in form2.visible_fields %}
+		<div class="form-group">
+			{{ field.errors }} 
+        	{{ field.label_tag }} {{ field }} <br> {{ field.help_text }}
+		</div>
+		<br>
+		{% endfor %}
+		<input type="submit" class="btn btn-default" value="Register"/>
+		</form>
+  	</div>
+  	</div>
+</body>
+</html>

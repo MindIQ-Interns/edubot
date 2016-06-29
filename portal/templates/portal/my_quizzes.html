@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href='{% static "portal/css/bootstrap.css" %}'>
+</head>
+<body>
+  <header>
+  <nav class="navbar navbar-inverse" style="background-color:white;">
+      <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/portal/" style="color:black;">QuizMasters</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="/portal/" style="color:black;">Home</a></li>
+        <li><a href="/portal/all_subjects" style="color:black;">Subjects</a></li>
+        <li class="active"><a href="/portal/my_quizzes" style="color:white;">My Quizzes</a></li>
+      </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/portal/logout" style="color:black;">Sign Out</a></li>    
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/portal/user_profile" style="color:black;">Profile</a></li>    
+        </ul>
+      </div>
+  </nav>
+  </header>
+  <!--  Comments/Improvisations
+
+  Need to make it look better. Also, we need to add pagination to it. Ajax to edit quizzes. Need to add deadlines field in the quiz model 
+
+  -->
+  <div class="container">
+  <div class="jumbotron">
+  <h1>My Quizzes</h1><br><br>
+  {% for each_quiz in quiz %}
+  <div class="container">
+   <a href="/portal/{{each_quiz.id}}/quizdetails"><h3>{{ each_quiz.name }}</h3></a>
+   <h4>The topic which it belongs to
+    {%for topic in each_quiz.topics.all %}
+        <a href="#">{{topic.name}}</a>
+    {% endfor %}</h4>
+    <br>
+    </div>
+  {% endfor %}
+  </div>
+  </div>
+</body>
+</html>

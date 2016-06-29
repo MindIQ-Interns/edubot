@@ -1,0 +1,90 @@
+<!-- We have to implement AJAX suxh that when you click on about us, it has to go the about us part of the page -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ToDo!</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href='{% static "portal/css/bootstrap.css" %}'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<header>
+	<nav class="navbar navbar-inverse" style="background-color:white;">
+  		<div class="container-fluid">
+    	<div class="navbar-header">
+      	<a class="navbar-brand" href="#" style="color:black;">QuizMasters</a>
+    	</div>
+    	<ul class="nav navbar-nav">
+      	<li class="active"><a href="/portal">Welcome</a></li>
+      	<li><a href="#" style="color:black;">Description</a></li>
+      	<li><a href="#" style="color:black;">About Us</a></li>
+    	</ul>
+    		<ul class="nav navbar-nav navbar-right">
+      			<li><a href="/portal/register" style="color:black;">Sign Up</a></li>		
+    		</ul>
+    		<ul class="nav navbar-nav navbar-right">
+      			<li><a href="/portal/signin" style="color:black;">Sign In</a></li>		
+    		</ul>
+  		</div>
+	</nav>
+  	</header>
+    <div class="container">
+  	<div class="jumbotron" align="center">
+    <!-- Automatics image slider -->
+
+  		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+    </ol>
+
+            <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src='{% static "portal/img/2.jpg" %}' alt="Chania" width="800" height="800">
+      </div>
+    
+      <div class="item">
+        <img src='{% static "portal/img/3.jpg" %}' alt="Flower" width="800" height="800">
+      </div>
+    </div>
+  </div> <br><br>
+
+  <!--  Description about the page -->  
+
+		<h1>Something to know...</h1> <br>	
+		<h3>This is indeed a great platform to educate young minds of our institute, and also make exams/tests a more fun thing!</h3> <br>
+		<h5 style="float:right;"><img src='{% static "portal/img/cr.png" %}' style="width:5%;">Uniqueness bitch!</h5>
+
+    <!--  Description about Us -->  
+
+    <div>
+  	<h1>Developers</h1>
+  		<div class="row">
+    		<div class="col-sm-4">
+    			<p class="bg-info">
+    				<h2><a href="#"> Nitin John Raj</a></h2>
+    				<br>askjf asfkj nasfkj nasf<br>saf ssafasfasf<br>asfasfasfasf
+    			</p>	
+    		</div>
+    		<div class="col-sm-4">
+    			<p class="bg-info">	
+    				<h2><a href="#">Vijeth Aradhya</a></h2>
+    				<br>askjf asfkj nasfkj nasf<br>saf ssafasfasf<br>asfasfasfasf
+    			</p>
+    		</div>
+    		<div class="col-sm-4">
+    			<p class="bg-info">	
+    				<h2><a href="#">Suhan Prabhu</a></h2>
+    				<br>askjf asfkj nasfkj nasf<br>saf ssafasfasf<br>asfasfasfasf
+    			</p>
+    		</div>
+  	</div>
+    </div>
+</body>
+</html>
