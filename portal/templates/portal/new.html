@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CreateAQuiz!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href='{% static "portal/css/bootstrap.css" %}'>
+</head>
+<body>
+  <header>
+  <nav class="navbar navbar-inverse" style="background-color:white;">
+      <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/portal/" style="color:black;">QuizMasters</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="/portal/" style="color:black;">Home</a></li>
+        <li><a href="/portal/all_subjects" style="color:black;">Subjects</a></li>
+        <li><a href="/portal/my_quizzes" style="color:black;">My Quizzes</a></li>
+      </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/portal/logout" style="color:black;">Sign Out</a></li>    
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/portal/user_profile" style="color:black;">Profile</a></li>    
+        </ul>
+      </div>
+  </nav>
+    </header>
+    <!--
+  
+    -> Ok. When you click on Add more questions, then whatever value you entered for the previous question also goes off :/, I dont uderstand why - VTA
+
+    But, it works for multiple questions though :) - VTA
+
+    Also, please add image fields :P - VTA
+
+    -->
+  <div class="container">
+  <div class="jumbotron">
+    <h1>Please fill in the details </h1>
+    <form role="form" action="/portal/create_quiz/" method="post"> {% csrf_token %}
+      <label for="quiz.name">Name of Quiz:</label>
+      <input type="text" class="form-control" name="quiz.name" id="quiz.name">
+      <br>
+      <label for="quiz.is_graded">Is the quiz graded:</label>
+      <input type="checkbox" name="quiz.is_graded" id="quiz.is_graded" value="">
+      <br>
+      {{ quizform }}
+      <br><br>
+      <div class="form-group" id="questions">
+      <label for="q.1">Question1:</label>
+      <textarea class="form-control" rows="5" name="q.1" id="q.1"></textarea><br>
+      <input type="checkbox" name="optioncheck.1.1" value="">
+      <label for="option.1.1">Option1:</label>
+      <input type="text" class="form-control" name="option.1.1" id="option.1.1">
+      <input type="checkbox" name=optioncheck.1.2 value="">
+      <label for="option.1.2">Option2:</label>
+      <input type="text" class="form-control" name="option.1.2" id="option.1.2">
+      <input type="checkbox" name=optioncheck.1.3 value="">
+      <label for="option.1.3">Option3:</label>
+      <input type="text" class="form-control" name="option.1.3" id="option.1.3">
+      <input type="checkbox" name=optioncheck.1.4 value="">
+      <label for="option.1.4">Option4:</label>
+      <input type="text" class="form-control" name="option.1.4" id="option.1.4">
+      <br><br>
+      </div>
+      <input type="submit" class="btn btn-default" value="Submit"/>
+      <!--<button type="submit" form="createquiz" value="Submit" class="btn btn-default">Submit</button>-->
+    </form> <br><br>
+      <button class="btn btn-default" onclick="addQ();">Add more questions</button>
+      <button class="btn btn-default">Import questions</button>
+  </div>
+  </div>
+</body>
+<script>
+  var q = 1;
+  function addQ () {
+    q++;
+    var objTo = document.getElementById('questions');
+    qlabel = '<label for="q.' + q + '">Question' + q + ':</label>';
+    qinput = '<textarea class="form-control" rows="5" name="q.' + q + '" id="q.' + q + '"></textarea><br>';
+    //qinput = '<input type="text" class="form-control" id="q.' + q + '"><br>';
+    optioncheck1 = '<input type="checkbox" name=optioncheck.' + q + '.1 value="">';
+    optionlabel1 = '<label for="option.' + q + '.1">Option1:</label>';
+    optioninput1 = '<input type="text" class="form-control" name="option.' + q + '.1" id="option.' + q + '.1">';
+    optioncheck2 = '<input type="checkbox" name=optioncheck.' + q + '.2 value="">';
+    optionlabel2 = '<label for="option.' + q + '.2">Option2:</label>';
+    optioninput2 = '<input type="text" class="form-control" name="option.' + q + '.2" id="option.' + q + '.2">';
+    optioncheck3 = '<input type="checkbox" name=optioncheck.' + q + '.3 value="">';
+    optionlabel3 = '<label for="option.' + q + '.3">Option3:</label>';
+    optioninput3 = '<input type="text" class="form-control" name="option.' + q + '.3" id="option.' + q + '.3">';
+    optioncheck4 = '<input type="checkbox" name=optioncheck.' + q + '.4 value="">';
+    optionlabel4 = '<label for="option.' + q + '.4">Option4:</label>';
+    optioninput4 = '<input type="text" class="form-control" name="option.' + q + '.4" id="option.' + q + '.4"><br><br>';
+    options = optioncheck1 + optionlabel1 + optioninput1 + optioncheck2 + optionlabel2 + optioninput2 + optioncheck3 + optionlabel3 + optioninput3 + optioncheck4 + optionlabel4 + optioninput4;
+    nextQ = qlabel + qinput + options;
+    objTo.innerHTML += nextQ;
+  }
+</script>
+</html>
