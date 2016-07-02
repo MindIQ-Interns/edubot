@@ -4,7 +4,7 @@ import json, requests
 from pprint import pprint
 from exceptions import Exception
 
-from edubot.settings import POST_MESSAGE_URL
+from .secrets import POST_MESSAGE_URL
 
 
 class MessageTypeDoesNotExist(Exception):
