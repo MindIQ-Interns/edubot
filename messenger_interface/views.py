@@ -33,7 +33,3 @@ class MessengerView(View):
                 pprint(json.dumps(translate_for_quiz_bot(message)))
 
         return HttpResponse()
-
-
-def test(request):
-    return HttpResponse('{"test" : "success"')
