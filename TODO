@@ -6,3 +6,185 @@
 5. Advanced features: questions with difficulty levels, portal-triggered notifications, quiz_bot-triggered notifications.
 
 Let's go!
+
+
+PROPOSED STRUCTURE:
+
+        KEY:
+            # - marked field can be None
+            RETRIEVE - fetch one object via GET api call
+            CREATE - create one object and save it in table via POST api call
+            SEND - send a message via messenger using POST api call
+
+    portal:
+    - functionality
+        1) User registration, login, logout with email.
+            models: Create PortalUser
+
+        2) FB authentication to sync BotUser with PortalUser, and thus receive notifications via FB Messenger (if BotUser exists, link via on_portal attribute in BotUser and fb_id attribute in PortalUser, else create and link)
+            models: Update PortalUser
+            api calls: RETRIEVE fb_id, RETRIEVE BotUser
+
+        3) Add students to groups.
+            models: Get Student, Create/Update StudentGroup
+
+        4) Create quizzes via forms from scratch, or via question banks, with the provision of setting deadlines.
+            models: Create .Questions / Get .Questions from QuestionBanks
+            api calls: CREATE quiz_bot.Questions, CREATE Options, CREATE Quiz
+
+        5) Send quizzes to student groups. (Quizzes with deadlines sent by default)
+            models: Create ongoing .Quiz if the quiz has a deadline
+            api calls: SEND a notification for the given important quiz to everyone in the quiz's student group
+
+        6) Check for the deadline expiry of quizzes you created.
+            models: Update .Quiz.ongoing = False, Create Notification
+            api calls: SEND a notification mentioning that the deadline is past to all students writing the quiz
+
+        7) View student results and papers after deadline, with the option of sending students personal paper reviews on where they can improve. Nevertheless, send the review after deadline.
+            models: Get .Quiz.quiz_id for api calls
+            api calls: RETRIEVE quiz_bot.Quiz, GET AttemptedPapers, GET Answers, UPDATE StudentQuizReview
+            NOTE: Organize above using a class.
+
+        8) Generate randomized quiz (uniform and non-uniform) from a bank of questions.
+            models: Get .Questions from a QuestionBank
+            api call: CREATE quiz_bot.Quiz
+
+        9) Adding questions to banks through keyboard and from previous quizzes and banks.
+            models: Get .Quiz, Get .QuestionBank
+            api calls: GET quiz_bot.Questions, GET Options, GET quiz_bot.Quiz
+
+       10) Send notifications to students.
+            api calls: SEND
+
+       11) Create subjects, topics.
+            models: Update PortalUser
+            api calls: CREATE Subject, CREATE Topic
+
+    - models:
+        1) PortalUser:   from django.contrib.auth.models.User
+            #fb_id                  integer
+            subjects                list(char)
+
+        2) Notification:
+            text                    text
+            quiz_id                 integer
+
+        3) Student:
+            name                    char
+            email                   email
+            fb_id                   integer
+
+        4) Question:
+            question_id             integer
+
+        5) QuestionBank:
+            questions               many-to-many(Question)
+
+        6) StudentGroup:
+            name                    char
+            students                many-to-many(Student)
+
+        7) Quiz:
+            quiz_id                 integer
+            author                  foreign key(PortalUser)
+            student_group           foreign key(StudentGroup)
+            ongoing                 boolean
+
+
+    quiz_bot:
+    -functionality:
+        1) Accepts user data when first contacted.
+            models: Create BotUser
+
+        2) Accepts postbacks to select a quiz. (via subject, topic, is_important, has_deadline)
+            models: Get Quiz, (maybe Subject, Topic)
+
+        3) Accepts answers to quiz questions via postbacks.
+            models: Create AttemptedPaper when a Quiz is started, Create Answers at each postback
+
+        4) Sends final score at end, with the correct answers.
+            models: Get Answers from AttemptedPaper, SEND results
+
+    - models:
+        1) BotUser:
+            first_name              char
+            last_name               char
+            username                char
+            dob                     datetime
+            gender                  char
+            fb_id                   char
+            #on_portal              integer
+
+        2) Subject:
+            name                    char
+
+        3) Topic:
+            name                    char
+            subject                 foreign key(Subject)
+
+        4) Question:
+            text                    text
+            #details                text
+            #review                 text
+            *difficulty             integer
+
+        5) Option:
+            text                    text
+            is_correct              boolean
+            question                foreign key(Question)
+
+        6) Quiz:
+            name                    char
+            author                  char = anonymous by default
+            #author_id              integer
+            created_on              datetime
+            #submission_deadline    datetime
+            topics                  many-to-many(Topic)
+            questions               many-to-many(Question)
+            length                  integer = len(questions)
+            *is_uniform             boolean = True if you wish for question to have the same weightage
+            *is_important
+            *max_score              integer = sum(questions.difficulty)
+
+        7) Answer:
+            paper                   foreign key(AttemptedPaper)
+            option                  foreign key(Option)
+
+        8) StudentQuizReview:
+            student                 foreign key(BotUser)
+            quiz                    foreign key(Quiz)
+            score                   integer
+            details                 text
+
+        9) AttemptedPaper:
+            student                 foreign key(BotUser)
+            quiz                    foreign key(Quiz)
+            attempted_till          integer = last attempted question number
+            is_complete             boolean
+
+    -api
+        [For web portal users who are logged in]
+        default depth=0
+        1) GET BotUser
+        2) GET Subject
+        3) GET Topic
+        4) GET Question (depth=1)
+        5) GET Option (depth=1)
+        6) GET Quiz (depth=2)
+        7) GET Answer
+        8) GET StudentQuizReview
+        9) GET AttemptedPaper (depth=2)
+       10) POST BotUser (update on_portal)
+       11) POST Subject (create)
+       12) POST Topic (create)
+       13) POST Question (create)
+       14) POST Option (create)
+       15) POST Quiz (create)
+       16) POST StudentQuizReview (update details)
+       [For messenger interface]
+       17) POST - message of the following json format:
+                {
+                    'sender_id': <sender id>,
+                    'type': <'postback'/'text'>,
+                    'data': <data>
+                }
