@@ -6,10 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 
-from .translators import translate_for_quiz_bot
-
-
-VERIFY_TOKEN = '25461261'
+from .secrets import VERIFY_TOKEN
 
 
 class MessengerView(View):
@@ -30,6 +27,5 @@ class MessengerView(View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 pprint(message)
-                pprint(json.dumps(translate_for_quiz_bot(message)))
 
         return HttpResponse()

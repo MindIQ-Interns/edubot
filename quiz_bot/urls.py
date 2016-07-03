@@ -1,3 +1,7 @@
 from django.conf.urls import url
 
-urlpatterns = []
+from .views import *
+
+urlpatterns = [
+    url(r'^user/(?P<pk>[0-9]+)', BotUserData.as_view()),
+]

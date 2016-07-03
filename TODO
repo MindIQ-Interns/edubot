@@ -1,0 +1,6 @@
+1. Recreate the quiz_bot using REST APIs.
+2. Reconnect the messenger_bot to quiz_bot using API calls.
+3. Restructure the portal to get data via API calls (maybe?).
+
+4. Beautifying front end (Angular?).
+5. Advanced features: questions with difficulty levels, portal-triggered notifications, quiz_bot-triggered notifications.
