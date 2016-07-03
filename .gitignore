@@ -2,3 +2,5 @@
 settings.py
 *.json
 media/problems/*
+.idea
+secrets.py
